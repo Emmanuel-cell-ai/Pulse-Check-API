@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const monitorController = require('../controllers/monitorController')
+const {welcomeMessage, registerMonitor} = require('../controllers/monitorController.js')
+
+router.get('/', welcomeMessage)
+router.post('/register', registerMonitor)
 
 
-router.post("/register", monitorController.registerMonitor)
+module.exports = router;

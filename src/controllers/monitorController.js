@@ -15,13 +15,16 @@ function startTimer(id){
     }, monitor.timeout * 1000)
 }
 
-const registerMonitor = (res, req) =>{
+const welcomeMessage = (req, res) =>{
+    return res.status(200).json({message: "Welcome to Pulse Check API"})
+}
+const registerMonitor = (req, res) =>{
     const {id, timeout, alert_email} = req.body
 
     if(!id || !timeout || !alert_email)
-        res.status(400).json({message: "Must input id, timeout and alert email to start monitoring the device"})
+        return res.status(400).json({message: "Must input id, timeout and alert email to start monitoring the device"})
 
-    monitor[id] = {
+    monitors[id] = {
         id,
         timeout,
         alert_email,
@@ -30,8 +33,8 @@ const registerMonitor = (res, req) =>{
     }
 
     startTimer(id)
-    res.status(201).json({message: `Now watching ${id}. Timer: ${timeout}s`})
+    return res.status(201).json({message: `Now watching ${id}. Timer: ${timeout}s`})
 
 }
 
-module.exports = {registerMonitor}
+module.exports = {welcomeMessage, registerMonitor}
