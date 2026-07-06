@@ -14,10 +14,16 @@ The diagram shows the four states of a monitor and every transition between them
 
 4. **Paused** - `POST /monitors/:id/pause` freezes the timer so no alert fire, the next heartbeat automatically un-pause it
 
-**Developer's Choice:**  the *Down->Running* transition (ie "Hearbeat revives") is my added feature.
-The original requirements leaves a monitor down permanently. Here, a heartbeat from recovred device restores monitoring and logs a Recovery event with the measured down time
 
-A heartbeat endpoint is the single reset point for all three state. It reset running, un-pauses Paused and revives Down
+# Setup
+
+1. git clone  https://github.com/Emmanuel-cell-ai/Pulse-Check-API.git
+
+2. cd Pulse-Check-API
+
+3. npm install
+
+4. npm start
 
 
 # API Documentation
@@ -51,12 +57,10 @@ event with measured downtime , see Developer's Choice).
 Freezes the countdown completely, e.g. during maintenance. No alerts fire while paused.
 
 
-# Setup
+# Developer's Choice
 
-1. git clone  https://github.com/Emmanuel-cell-ai/Pulse-Check-API.git
+**Developer's Choice:**  the *Down->Running* transition (ie "Hearbeat revives") is my added feature.
+The original requirements leaves a monitor down permanently. Here, a heartbeat from recovred device restores monitoring and logs a Recovery event with the measured down time
 
-2. cd Pulse-Check-API
+A heartbeat endpoint is the single reset point for all three state. It reset running, un-pauses Paused and revives Down
 
-3. npm install
-
-4. npm start
