@@ -15,9 +15,6 @@ function startTimer(id){
     }, monitor.timeout * 1000)
 }
 
-const welcomeMessage = (req, res) =>{
-    return res.status(200).json({message: "Welcome to Pulse Check API"})
-}
 
 const registerMonitor = (req, res) =>{
     const {id, timeout, alert_email} = req.body
@@ -75,4 +72,4 @@ const pauseMonitor = (req, res) =>{
     return res.status(200).json({message: "Monitor paused. No alert will fire"})
 }
 
-module.exports = {welcomeMessage, registerMonitor, heartbeat, pauseMonitor}
+module.exports = {registerMonitor, heartbeat, pauseMonitor}
