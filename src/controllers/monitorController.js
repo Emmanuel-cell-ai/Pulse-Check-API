@@ -18,6 +18,7 @@ function startTimer(id){
 const welcomeMessage = (req, res) =>{
     return res.status(200).json({message: "Welcome to Pulse Check API"})
 }
+
 const registerMonitor = (req, res) =>{
     const {id, timeout, alert_email} = req.body
 
@@ -37,4 +38,30 @@ const registerMonitor = (req, res) =>{
 
 }
 
-module.exports = {welcomeMessage, registerMonitor}
+const heartbeat = (req, res) => {
+    const monitor = monitors[req.params.id];
+
+    if (!monitor)
+        return res.status(404).json({message: "Monitor not found"});
+
+    // My Developer's choice - To revive a device that is down automatically
+    const wasDown = monitor.status === "down";
+
+    if (wasDown){
+        console.log(JSON.stringify({
+            Recovery : `Device ${req.params.id} is back online!`,
+            time: new Date().toISOString(),
+            downtime: Math.round((Date.now() - monitor.downsince) / 1000)
+        }));
+        delete monitor.downsince;
+    }
+
+    clearTimeout(monitor.timer);
+    monitor.status = "running";
+    startTimer(req.params.id);
+
+    return res.status(200).json({message: wasDown ? "Welcome back! Monitoring resumed.": "Timer reset"});
+
+}
+
+module.exports = {welcomeMessage, registerMonitor, heartbeat}
