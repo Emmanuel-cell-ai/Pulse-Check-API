@@ -64,4 +64,15 @@ const heartbeat = (req, res) => {
 
 }
 
-module.exports = {welcomeMessage, registerMonitor, heartbeat}
+const pauseMonitor = (req, res) =>{
+    const monitor = monitors[req.params.id]
+
+    if(!monitor)
+        return res.status(404).json({message: "Monitor not found"})
+
+    clearTimeout(monitor.timer)
+    monitor.status = "Paused"
+    return res.status(200).json({message: "Monitor paused. No alert will fire"})
+}
+
+module.exports = {welcomeMessage, registerMonitor, heartbeat, pauseMonitor}
